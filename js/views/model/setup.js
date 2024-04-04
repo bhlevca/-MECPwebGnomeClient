@@ -172,10 +172,12 @@ define([
 
         updateModelValues: function(e){
             var name = webgnome.model.get('name');
+            var lake = webgnome.model.get('lake');
             var start_time = moment(webgnome.model.get('start_time')).format(webgnome.config.date_format.moment);
             var durationAttrs = webgnome.model.formatDuration();
 
             this.$('#name').val(name);
+            this.$('#lake').val(lake);
             this.$('#start_time').val(start_time);
             this.$('#days').val(durationAttrs.days);
             this.$('#hours').val(durationAttrs.hours);

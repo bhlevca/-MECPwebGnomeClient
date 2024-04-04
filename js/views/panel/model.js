@@ -90,6 +90,9 @@ define([
             var name = this.$('#name').val();
             webgnome.model.set('name', name);
 
+            var lake = this.$('#lake').val();
+            webgnome.model.set('lake', lake);
+
             var start_time = moment(this.$('.datetime').val(),
                                     webgnome.config.date_format.moment);
                                     
