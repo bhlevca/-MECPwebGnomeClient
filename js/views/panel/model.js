@@ -189,10 +189,13 @@ define([
                     var stopTimer = false;
                     if(json_response.obj_type){
                         //use the netcdf filename to get the dfsu file name and set it to SpillJsonOutput and WeatheringOutput.
-                        //the file name should follow a certain convension.
+                        //the file name should follow a certain convension - the netcdf file and dfsu file is in the same folder. The dfsu file has name of 2D all.dfsu. 
                         //SpillJsonOutput is used for map display. The concentration is only calculated when the display of the spill is set as volumetric concentration.
                         //WeatheringOutput is used for graphing. This is not the best place but would would allow reuse of the UI components for table and chart display.
-                        var dfsu_file_path = json_response.filename.replace('.nc','.dfsu');
+                        var netcdf_file_path = json_response.filename;
+                        var paths = netcdf_file_path.split('\\');                        
+                        var dfsu_file_path = netcdf_file_path.replace(paths[paths.length - 1], '2D all.dfsu');
+
                         var output = (webgnome.model.get('outputters').findWhere({obj_type: 'gnome.outputters.json.SpillJsonOutput'}));
                         output.set('water_depth_dfsu_file', dfsu_file_path);
                         output._updateRequestedDataTypes(dtype);
