@@ -195,20 +195,31 @@ define([
                         //the file name should follow a certain convension - the netcdf file and dfsu file is in the same folder. The dfsu file has name of 2D all.dfsu. 
                         //SpillJsonOutput is used for map display. The concentration is only calculated when the display of the spill is set as volumetric concentration.
                         //WeatheringOutput is used for graphing. This is not the best place but would would allow reuse of the UI components for table and chart display.
-                        var netcdf_file_path = json_response.filename;
-                        var paths = netcdf_file_path.split('\\');                        
-                        var dfsu_file_path = netcdf_file_path.replace(paths[paths.length - 1], '2D all.dfsu');
-
+                        var depthDfsu = '2D all.dfsu';
+                        var filename = json_response.current.data_file;
+                        if(filename !== undefined && filename.includes("(") && filename.includes(")")){
+                            var appendixNum = filename.split("(")[1].split(")")[0];
+                            depthDfsu = '2D all '.concat("(",appendixNum,")",".dfsu")
+                        }                            
+                        
                         var output = (webgnome.model.get('outputters').findWhere({obj_type: 'gnome.outputters.json.SpillJsonOutput'}));
-                        output.set('water_depth_dfsu_file', dfsu_file_path);
-                        output._updateRequestedDataTypes(dtype);
+                        output.set('water_depth_dfsu_file', depthDfsu);
 
                         var output = (webgnome.model.get('outputters').findWhere({obj_type: 'gnome.outputters.weathering.WeatheringOutput'}));
                         output.set('surface_conc','kde')
-                        output.set('water_depth_dfsu_file', dfsu_file_path);                        
-                        output.save()
+                        output.set('water_depth_dfsu_file', depthDfsu);                        
                         
-                        //add the mover
+                        //add the mover                        
+                        var existingMover = (webgnome.model.get('movers').findWhere({name: 'MIKE HD'}));
+                        if(existingMover !== undefined){
+                            webgnome.model.get('movers').remove(existingMover)
+                        }
+
+                        var existingCurrent = (webgnome.model.get('environment').findWhere({name: 'MIKE HD'}));
+                        if(existingCurrent !== undefined){
+                            webgnome.model.get('environment').remove(existingCurrent)
+                        }
+                        
                         var mover = new PyCurrentMover(json_response, {parse: true});
                         webgnome.model.get('movers').add(mover);
                         webgnome.model.get('environment').add(mover.get('current'));

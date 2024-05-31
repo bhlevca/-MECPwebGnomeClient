@@ -13,7 +13,7 @@ define([
 
         defaults: {
             'obj_type': 'gnome.concentration.concentration_location.ConcentrationLocation',
-            'locations': [[0, 0]]
+            'locations': [[0, 0, 0]]
         },
 
         initialize: function(options) {
