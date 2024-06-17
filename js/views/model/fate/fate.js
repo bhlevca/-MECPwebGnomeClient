@@ -1083,9 +1083,9 @@ define([
                 dataset = _.clone(this.dataset);
             }
 
-            var budgetRealValueFormat = function(value) {
+            var concentrationRealValueFormat = function(value) {
                 if (value < 10) {
-                    value = Number(value).toFixed(2);
+                    value = Number(value).toFixed(6);
                 } else if (value < 100) {
                     value = Number(value).toFixed(1);
                 } else {
@@ -1144,11 +1144,11 @@ define([
                     //concentration column
                     for (var set in dataset) {
                         if (row === 0) {
-                            row_html += '<th>' + dataset[set].label + '<br> (kg/m^3)</th>';
+                            row_html += '<th>' + dataset[set].label + '<br> (mg/L)</th>';
                         }
                         else {
                             var value = dataset[set].data[row][1];
-                            row_html += '<td>' + budgetRealValueFormat(value) + '</td>';
+                            row_html += '<td>' + concentrationRealValueFormat(value) + '</td>';
                         }
                     }
 
@@ -1865,8 +1865,11 @@ define([
             if (!_.isUndefined(datasetName)) {
                 dataUnits = this.$('.tab-pane.active .yaxisLabel').html();
                 dataset = this.pluckDataset(webgnome.mass_balance, [datasetName])[0];
-                if (datasetName === 'avg_density' || datasetName === 'volumetric_concentration_poi') {
+                if (datasetName === 'avg_density') {
                     dataUnits = "kg/m^3";
+                }
+                else if (datasetName === 'volumetric_concentration_poi') {
+                    dataUnits = "mg/L";
                 }
                 else if (datasetName === 'avg_viscosity') {
                     dataUnits = "cSt";
@@ -2168,6 +2171,10 @@ define([
 
             if (n === 1) {
                 units = $('#weatherers .tab-pane:visible .yaxisLabel').text();
+                //this is the special case for concentration
+                if(units.length === 0){
+                    units = $('#concentration-graph .yaxisLabel').text();
+                }
             }
             else {
                 units = $('#weatherers .tab-pane:visible .secondYaxisLabel').text();
