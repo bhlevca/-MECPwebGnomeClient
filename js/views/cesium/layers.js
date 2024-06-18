@@ -150,6 +150,9 @@ define([
             for (var i = 0; i < model_spills.length; i++) {
                 this.addLayer(model_spills.models[i]);
             }
+            //add concentration layer
+            this.addLayer(webgnome.model.get('concentration'));
+
             var env_objs = webgnome.model.get('environment').filter(function(obj) {
                 var ot = obj.get('obj_type').split('.');
                 ot.pop();
@@ -353,6 +356,7 @@ define([
                     visObj: e.les,
                     appearance: e.get('_appearance')
                 });
+
                 var spillLocLayer = new LayerModel({
                     type: 'cesium',
                     parentEl: 'dataSource',
@@ -363,6 +367,19 @@ define([
                 });
                 this.layers.add([ spillLayer, spillLocLayer]);
             }
+
+            if(e.get('obj_type') === 'gnome.concentration.concentration_location.ConcentrationLocation'){
+                var concLocLayer = new LayerModel({
+                    type: 'cesium',
+                    parentEl: 'dataSource',
+                    model: e,
+                    id: e.get('id') + '_loc',
+                    visObj: e._visObj,
+                    appearance: e.get('_appearance')
+                });
+                this.layers.add([concLocLayer]);
+            }
+
             if(this._rendered) {
                 this.render();
             }

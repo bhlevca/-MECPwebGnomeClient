@@ -20,6 +20,12 @@ define([
             BaseModel.prototype.initialize.call(this, options);
 
             this._visObj = this.generateVis();
+            this.listenTo(this, 'change:locations', this.handleVisChange);
+        },
+
+        handleVisChange: function() {
+            var pin = this._visObj.entities.concentrationPoints[0];
+            pin.position.setValue(Cesium.Cartesian3.fromDegrees(this.get('locations')[0][0], this.get('locations')[0][1]));
         },
 
         generateVis: function(addOpts) {
@@ -48,7 +54,8 @@ define([
                             lat = Graticule.prototype.genDegLabel('lat', loc.latitude);
                         }
                         var ttstr;
-                        ttstr = 'Lon: ' + ('\t' + lon) +
+                        ttstr = 'Concentration Location' +
+                                '\nLon: ' + ('\t' + lon) +
                                 '\nLat: ' + ('\t' + lat);
 
                         return ttstr;
@@ -60,7 +67,7 @@ define([
                 var newPt = coll.add(_.extend({
                     position: new Cesium.ConstantPositionProperty(Cesium.Cartesian3.fromDegrees(positions[i][0], positions[i][1])),
                     billboard: {
-                        image: '/img/spill-pin.png',
+                        image: '/img/con-pin.png',
                         verticalOrigin: Cesium.VerticalOrigin.CENTER,
                         horizontalOrigin: Cesium.HorizontalOrigin.CENTER
                     },
