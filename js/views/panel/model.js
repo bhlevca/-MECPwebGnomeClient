@@ -8,9 +8,10 @@ define([
     'views/panel/base',
     'views/form/model',
     'model/mikehd',
+    'model/mikehdstatus',
     'model/movers/py_current'
 ], function(_, $, Backbone, swal, moment,
-            ModelPanelTemplate, BasePanel, ModelFormView, MikehdModel, PyCurrentMover) {
+            ModelPanelTemplate, BasePanel, ModelFormView, MikehdModel,MikehdStatusModel, PyCurrentMover) {
     'use strict';
     var modelPanel = BasePanel.extend({
         className: 'col-md-6 model object complete panel-view',
@@ -70,6 +71,8 @@ define([
 
             this.$('#lake option[value="' + model.get('lake') + '"]')
             .prop('selected', 'selected');
+
+            this.retrieveHDStatus();
         },
 
         edit: function(e) {
@@ -172,6 +175,34 @@ define([
                 }, this)
             });
         },
+
+        retrieveHDStatus: function(){
+            var runhd = new MikehdStatusModel();
+            runhd.fetch({
+                success: _.bind(function(response){
+                    if(response.attributes.status === 1){
+                        $('#model_status').text('HD Model is Running ...');
+                        $('#model_status').show();
+                        $('#run_hd').hide();
+                        if (typeof(Worker) !== "undefined") {
+                            // Yes! Web worker support!
+                            if (typeof(webgnome.model.hdtimer) === "undefined") {
+                                webgnome.model.hdtimer = new Worker("js/session_timer.js");
+                                webgnome.model.hdtimer.onmessage = this.loadHD;
+                                console.log('hd timer is started.');
+                            }
+                        }
+                        else {
+                          console.warning('Sorry, web workers not supported!');
+                        }
+                    }
+                }, this),
+                error: _.bind(function(e){
+                    console.error('HD status can\'t be retrieved.');
+                }, this)
+            });
+        },
+
 
         loadHD: function(){
             console.log('loadHD');
