@@ -18,7 +18,8 @@ define([
 
         events: function() {
             return _.defaults({
-                'click .map-modal': 'initMapModal'
+                'click .map-modal': 'initMapModal',
+                'keyup .geo-info': 'manualMapInput'
             }, FormModal.prototype.events);
         },
 
@@ -93,6 +94,29 @@ define([
 
             this.$('#start-lat').val(startPoint[1]);
             this.$('#start-lon').val(startPoint[0]);
+        },
+
+        manualMapInput: function() {
+            var start = [this.$('#start-lon').val(), this.$('#start-lat').val()];
+            var startCoords = this.coordsParse(_.clone(start));
+            var startPosition = [[startCoords[0], startCoords[1], 0]];
+
+            this.model.set('locations', startPosition);
+        },
+
+        coordsParse: function(coordsArray) {
+            for (var i = 0; i < coordsArray.length; i++) {
+                if (!_.isUndefined(coordsArray[i]) &&
+                        coordsArray[i].trim().indexOf(' ') !== -1) {
+                    coordsArray[i] = nucos.sexagesimal2decimal(coordsArray[i]);
+                    coordsArray[i] = parseFloat(coordsArray[i]);
+                }
+                else if (!_.isUndefined(coordsArray[i])) {
+                    coordsArray[i] = parseFloat(coordsArray[i]);
+                }
+            }
+
+            return coordsArray;
         }
     });
 
