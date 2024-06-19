@@ -269,7 +269,7 @@ define([
                 fromInput = _.bind(function(value) {
                     //return nucos.Converters.length.Convert(newUnits, 'kg/m^2', value);
                     // Nucos doesn't support these units, so do manually
-                    if (newUnits === 'kg/m^2'){
+                    if (newUnits === 'g/m^2'){
                         return value;
                     } else {
                         return value / 1000;
@@ -280,7 +280,7 @@ define([
                     //surf_conc->percentage
                     //value = nucos.Converters.length.Convert('kg/m^2', newUnits, value);
                     var maxconc = colormap.get('numberScaleDomain')[1];
-                    if (newUnits !== 'kg/m^2'){
+                    if (newUnits !== 'g/m^2'){
                         value = value * 1000;
                         maxconc = maxconc * 1000;
                     }
@@ -295,7 +295,7 @@ define([
                 fromInput = _.bind(function(value) {
                     //return nucos.Converters.length.Convert(newUnits, 'kg/m^2', value);
                     // Nucos doesn't support these units, so do manually
-                    if (newUnits === 'kg/m^3'){
+                    if (newUnits === 'g/m^3'){
                         return value;
                     } else {
                         return value / 1000;
@@ -306,7 +306,7 @@ define([
                     //surf_conc->percentage
                     //value = nucos.Converters.length.Convert('kg/m^2', newUnits, value);
                     var maxconc = colormap.get('numberScaleDomain')[1];
-                    if (newUnits !== 'kg/m^3'){
+                    if (newUnits !== 'g/m^3'){
                         value = value * 1000;
                         maxconc = maxconc * 1000;
                     }

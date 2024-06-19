@@ -373,7 +373,8 @@ define([
                                     _.bind(function(primitive){
                                         var mass = Number(primitive.mass ? primitive.mass : 0).toPrecision(4);
                                         var loc = Cesium.Ellipsoid.WGS84.cartesianToCartographic(primitive.position);
-                                        var surf_conc = Number(primitive.surface_concentration ? primitive.surface_concentration * 1000 : 0); //kg/m2 -> g/m2
+                                        var surf_conc = Number(primitive.surface_concentration ? primitive.surface_concentration : 0); 
+                                        var vol_conc = Number(primitive.volumetric_concentration ? primitive.volumetric_concentration : 0); 
                                         var viscosity = Number(primitive.viscosity ? primitive.viscosity * 1000000 : 0); //m2/s to cSt
                                         var density = Number(primitive.density ? primitive.density : 0);
                                             //data = Number(this.pickedObject.primitive.mag ? this.pickedObject.primitive.mag : 0),
@@ -382,6 +383,9 @@ define([
                                         var ttstr = 'Mass: ' + ('\t' + mass).slice(-7) + ' kg';
                                         if (surf_conc !== 0) {
                                             ttstr = ttstr + '\nS_Conc: \t' + webgnome.largeNumberFormatter(surf_conc) + ' g/m^2';
+                                        }
+                                        if (vol_conc !== 0) {
+                                            ttstr = ttstr + '\nV_Conc: \t' + Number(vol_conc).toFixed(6) + ' mg/L';
                                         }
                                         if (viscosity !== 0) {
                                             ttstr = ttstr + '\nViscosity: \t' + webgnome.largeNumberFormatter(viscosity) + ' cSt';
