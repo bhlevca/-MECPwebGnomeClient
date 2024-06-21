@@ -27,7 +27,7 @@ define([
                 'on': true,
                 'obj_type': 'gnome.spills.spill.Spill',
                 'release': new PointLineRelease(),
-                'substance': new NonWeatheringSubstance(),
+                'substance': new GnomeOil(),
                 'name': 'Spill',
                 'amount': 100,
                 'units': 'bbl',

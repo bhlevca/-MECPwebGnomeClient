@@ -12,6 +12,7 @@ define([
     'model/map/bna',
     'model/spill/spill',
     'model/spill/nonweatheringsubstance',
+    'model/spill/gnomeoil',
     'model/environment/tide',
     'model/environment/wind',
     'model/environment/water',
@@ -57,7 +58,7 @@ define([
     'model/default_objs'
 ], function($, _, Backbone, moment, swal,
     BaseModel, Cache, ConcentrationModel,
-    MapModel, ParamMapModel, MapBnaModel, SpillModel, NonWeatheringSubstance,
+    MapModel, ParamMapModel, MapBnaModel, SpillModel, NonWeatheringSubstance,GnomeOil,
     TideModel, WindModel, WaterModel, WavesModel, GridCurrentModel, GridWindModel,
     RandomMover, WindMover, PyWindMover,
     CatsMover, c_GridCurrentMover, PyCurrentMover, CurrentCycleMover,
@@ -175,7 +176,8 @@ define([
                 ]),
                 movers: new MoversCollection(),
                 environment: new Backbone.Collection([
-                    new WavesModel()
+                    new WavesModel(),
+                    new WaterModel()
                 ]),
                 spills: new SpillsCollection(),
             };
@@ -712,7 +714,8 @@ define([
                     }
                 }
             }
-            webgnome.obj_ref.substance = new NonWeatheringSubstance();
+            webgnome.obj_ref.substance = new GnomeOil();
+            this.setGlobalSubstance(webgnome.obj_ref.substance);
             return webgnome.obj_ref.substance;
         },
 
