@@ -31,6 +31,7 @@ define([
         render: function(options){
             if (this.loaded){
                 var amount = this.model.get('amount');
+                var standard = this.model.get('standard');
                 var duration = this.model.parseDuration();
                 var units = this.model.get('units');
                 var disabled = this.oilSelectDisabled();
@@ -49,6 +50,7 @@ define([
                 this.body = _.template(ContinueFormTemplate)({
                     name: this.model.get('name'),
                     amount: amount,
+                    standard: standard,
                     time: _.isNull(this.model.get('release').get('release_time')) ? moment(webgnome.model.get('start_time')).format('YYYY/M/D H:mm') : moment(this.model.get('release').get('release_time')).format('YYYY/M/D H:mm'),
                     'duration': duration,
                     num_elements: num_elements,
@@ -123,6 +125,14 @@ define([
             } else {
                 this.$('#spill-amount').val(amount);
             }
+
+            var standard = parseFloat(this.$('#standard').val());
+            if (isNaN(standard)){
+                standard = 0.001;
+            } else {
+                this.$('#standard').val(standard);
+            }
+
             var release = this.model.get('release');
             var units = this.$('#units').val();
             var releaseTime = moment(this.$('#datetime').val(), 'YYYY/M/D H:mm');
@@ -139,6 +149,7 @@ define([
                 'name': name,
                 'units': units,
                 'amount': amount,
+                'standard': standard,
                 'release': release
             });
             

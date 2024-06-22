@@ -132,6 +132,15 @@
             {% } %}
         </div>
 	</div>
+	<div class="form-group release-time">
+		<label class="col-sm-4 control-label" for="standard">Drinking Water Standard:</label>
+		<div class="col-sm-8">
+			<div class="col-sm-6">
+				<input type="number" step="0.001" class="form-control" id="standard" min="0" value="{{ standard }}" onfocusout="this.value = Math.abs(this.value)"/>
+            </div>
+            <label class="col-sm-2 control-label" for="standard">mg/L</label>
+        </div>
+	</div>
 	<!-- <div class="form-group"> -->
         <!-- <label class="control-label col-sm-5">Confidence in Spill Amount:</label> -->
         <!-- <div class="col-sm-6"> -->

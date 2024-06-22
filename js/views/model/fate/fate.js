@@ -139,7 +139,8 @@ define([
             'burned': 'rgb(225, 87, 89)',
             'boomed': 'rgb(50, 50, 50)',
             'floating': 'rgb(186, 176, 172)',
-            'volumetric_concentration_poi': 'rgb(186, 176, 172)',
+            'volumetric_concentration_poi': 'rgb(255, 0, 0)',
+            'standard': 'rgb(0,255,0)'
         },
 
         initialize: function(options) {
@@ -1163,9 +1164,9 @@ define([
         },
 
         renderGraphConcentration: function(dataset) {
-            dataset = this.pluckDataset(dataset, ['volumetric_concentration_poi', 'secondtime']);
+            dataset = this.pluckDataset(dataset, ['volumetric_concentration_poi','standard','secondtime']);
 
-            if (dataset.length === 2) {
+            if (dataset.length === 3) {
                 dataset[0].fillArea = [{representation: 'symmetric'}, {representation: 'asymmetric'}];
 
                 if (_.isUndefined(this.graphConcentration)) {
@@ -1863,7 +1864,7 @@ define([
                 if (datasetName === 'avg_density') {
                     dataUnits = "kg/m^3";
                 }
-                else if (datasetName === 'volumetric_concentration_poi') {
+                else if (datasetName === 'volumetric_concentration_poi' || datasetName === 'standard') {
                     dataUnits = "mg/L";
                 }
                 else if (datasetName === 'avg_viscosity') {
@@ -2022,7 +2023,7 @@ define([
 
                 keys.push('water_density', 'water_viscosity',
                           'dispersibility_difficult',
-                          'dispersibility_unlikely');
+                          'dispersibility_unlikely', 'standard');
 
                 for (var type in keys) {
                     this.dataset.push({
@@ -2057,6 +2058,12 @@ define([
             var density = webgnome.model.get('spills').at(0).get('substance').get('standard_density');
             var converter = new nucos.OilQuantityConverter();
             var water = webgnome.model.get('environment').findWhere({'obj_type': 'gnome.environment.water.Water'});
+
+            //get standard and added to the dataset 
+            var standard = 0.001;
+            if(webgnome.model.get('spills').length > 0){
+                standard = webgnome.model.get('spills').at(0).get('standard');
+            }
 
             for (var set in this.dataset) {
                 var low_value, nominal_value, high_value;
@@ -2103,6 +2110,11 @@ define([
                     low_value = waterDensity;
                     nominal_value = waterDensity;
                     high_value = waterDensity;
+                }
+                else if (this.dataset[set].name === 'standard') {
+                    low_value = standard;
+                    nominal_value = standard;
+                    high_value = standard;
                 }
                 else if (this.dataset[set].name === 'water_viscosity') {
                     low_value = 1;

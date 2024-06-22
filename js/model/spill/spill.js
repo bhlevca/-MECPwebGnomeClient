@@ -30,6 +30,7 @@ define([
                 'substance': new GnomeOil(),
                 'name': 'Spill',
                 'amount': 100,
+                'standard': 0.001,
                 'units': 'bbl',
                 '_appearance': new SpillAppearance()
             };
