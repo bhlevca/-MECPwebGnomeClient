@@ -2211,6 +2211,14 @@ define([
 
         formatLabel: function(label) {
             if (label==='off_maps') { label='off_map'; }
+            
+            if(label === 'standard'){
+                return "Drinking Water Standard"
+            }
+            if(label === 'volumetric_concentration_poi'){
+                return "Volumetric Concentration"
+            }
+
 
             return label.charAt(0).toUpperCase() + label.slice(1).replace(/_/g, ' ');
         },
