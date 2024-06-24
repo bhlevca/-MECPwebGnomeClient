@@ -68,7 +68,7 @@ define([
                     position: new Cesium.ConstantPositionProperty(Cesium.Cartesian3.fromDegrees(positions[i][0], positions[i][1])),
                     billboard: {
                         image: '/img/con-pin.png',
-                        verticalOrigin: Cesium.VerticalOrigin.CENTER,
+                        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
                         horizontalOrigin: Cesium.HorizontalOrigin.CENTER
                     },
                     show: true,
