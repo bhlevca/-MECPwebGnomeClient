@@ -45,35 +45,14 @@ define([
 
         renderPositionInfo: function(e) {            
             var compiled;
-
-            var lat_formats = "64.5011N<br/>(decimal degrees)<br/>64 30.066N<br/>(degrees decimal minutes) <br/>64 30 3.96N<br/>(degrees minutes seconds)";
-            var lon_formats = '165.4064W<br/>(decimal degrees)<br/>165 24.384W<br/>(degrees decimal minutes)<br/>165 24 23.04W<br/>(degrees minutes seconds)';
-
+        
             compiled = _.template(ConcentrationLocationTemplate)({
                     lat: this.model.get('locations')[0][1],
-                    lon: this.model.get('locations')[0][0],
-                    lat_formats: lat_formats,
-                    lon_formats: lon_formats
+                    lon: this.model.get('locations')[0][0]
                 });
 
             this.$('#positionInfo').html('');
             this.$('#positionInfo').html(compiled);
-
-            this.$('.position input[name="lat"]').tooltip({
-                trigger: 'focus',
-                html: true,
-                width: 200,
-                placement: 'top',
-                viewport: 'body'
-            });
-
-            this.$('.position input[name="lng"]').tooltip({
-                trigger: 'focus',
-                html: true,
-                width: 200,
-                placement: 'top',
-                viewport: 'body'
-            });
         },
 
         initMapModal: function() {
@@ -102,6 +81,15 @@ define([
             var startPosition = [[startCoords[0], startCoords[1], 0]];
 
             this.model.set('locations', startPosition);
+
+            this.showParsedCoords('start');
+        },
+
+        showParsedCoords: function(position) {
+            var coords = this.model.get('locations');
+
+            this.$('.' + position + '-lat-parse').text('(' + coords[0][1].toFixed(4) + ')');
+            this.$('.' + position + '-lon-parse').text('(' + coords[0][0].toFixed(4) + ')');
         },
 
         coordsParse: function(coordsArray) {
