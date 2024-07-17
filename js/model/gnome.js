@@ -174,7 +174,9 @@ define([
                     new Langmuir({on: false}),
                     //new DissolutionWeatherer({on: false})
                 ]),
-                movers: new MoversCollection(),
+                movers: new MoversCollection([
+                    new RandomMover()
+                ]),
                 environment: new Backbone.Collection([
                     new WavesModel(),
                     new WaterModel()

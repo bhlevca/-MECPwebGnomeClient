@@ -1086,7 +1086,7 @@ define([
 
             var concentrationRealValueFormat = function(value) {
                 if (value < 10) {
-                    value = Number(value).toFixed(6);
+                    value = Number(value).toFixed(10);
                 } else if (value < 100) {
                     value = Number(value).toFixed(1);
                 } else {
